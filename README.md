@@ -14,5 +14,10 @@ logger = chats.GChatLog(user='username', passwd='1234')
 logger.import_chats('/path/to/archive/dir') # this will save all of the chats on the server into individual files in that directory
 ```
 
+Gmail configuration
+===================
 
+To archive your chats the gmail needs chat logs to be available via IMAP.
 
+1. Under 'Forwarding and POP/IMAP' select the 'Enable IMAP' option.
+1. Under 'Labels' check the 'Show in IMAP' box next to 'Chats'.
