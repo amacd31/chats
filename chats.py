@@ -47,12 +47,12 @@ class GChatLogs(object):
         count = 0
         for id in self.chat_ids:
             if not os.path.exists('%s/%s.chat' % (directory, id)):
-                try:
-                    chat = self.get_chat(id)
-                    chat.write(directory)
-                    count += 1
-                except:
-                    print 'failed to get chat id: %s - %s' % (id, sys.exc_info()[0])
+                #try:
+                chat = self.get_chat(id)
+                chat.write(directory)
+                count += 1
+                #except:
+                    #print 'failed to get chat id: %s - %s' % (id, sys.exc_info()[0])
         print 'finished saving %d chat logs' % count
 
 
@@ -154,7 +154,8 @@ class ChatMessage(object):
         """
         self.sender = message.attributes['to'].value
         body = message.getElementsByTagName('cli:body')
-        self.timestamp = datetime.fromtimestamp(float(message.attributes['int:time-stamp'].value) / 1000)
+        time = message.getElementsByTagName('time')[0]
+        self.timestamp = datetime.fromtimestamp(float(time.attributes['ms'].value) / 1000)
         assert(len(body) == 1)
         self.body = body[0].childNodes[0].nodeValue
 
@@ -189,6 +190,10 @@ def simple_analysis(directory):
         weekdays[chat.date.isoweekday()] += 1
         hours[chat.date.hour] += 1
 
+    print people
+    print dates
+    print weekdays
+    print hours
     plot_chat_volume(chats)
 
 
@@ -206,7 +211,7 @@ def plot_chat_volume(chats):
     ordered = ordered[1:]
     fig = pyplot.figure()
     plot = fig.add_subplot(111)
-    plot.plot([d.toordinal() for d in ordered], [dates[d] for d in ordered])
+    plot.bar([d.toordinal() for d in ordered], [dates[d] for d in ordered])
 
     def format_date(x, pos=None):
         d = datetime.fromordinal(int(x))
