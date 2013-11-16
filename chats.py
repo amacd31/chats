@@ -152,7 +152,8 @@ class ChatMessage(object):
         Params:
           message: dom representation of the xml message
         """
-        self.sender = message.attributes['to'].value
+        self.sender = message.attributes['from'].value
+        self.receiver = message.attributes['to'].value
         body = message.getElementsByTagName('cli:body')
         time = message.getElementsByTagName('time')[0]
         self.timestamp = datetime.fromtimestamp(float(time.attributes['ms'].value) / 1000)
