@@ -113,9 +113,12 @@ class ChatLog(object):
         return value.rstrip().lstrip()
 
     def body(self):
-        start = self.raw.index("<con:")
-        end = self.raw.rindex("</con:conversation>") + len("</con:conversation>")
-        return self.raw[start:end]
+        try:
+            start = self.raw.index("<con:")
+            end = self.raw.rindex("</con:conversation>") + len("</con:conversation>")
+            return self.raw[start:end]
+        except:
+            return ""
 
     def write(self, directory='.'):
         """
@@ -157,8 +160,10 @@ class ChatMessage(object):
         body = message.getElementsByTagName('cli:body')
         time = message.getElementsByTagName('time')[0]
         self.timestamp = datetime.fromtimestamp(float(time.attributes['ms'].value) / 1000)
-        assert(len(body) == 1)
-        self.body = body[0].childNodes[0].nodeValue
+        if (len(body) == 1):
+            self.body = body[0].childNodes[0].nodeValue
+        else:
+            self.body = ""
 
     def __str__(self):
         return "(%s) %s: %s" % (self.timestamp, self.sender, self.body)
