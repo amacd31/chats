@@ -45,15 +45,23 @@ class GChatLogs(object):
         Imports all of the chats into the directory given.
         """
         count = 0
-        for id in self.chat_ids:
-            if not os.path.exists('%s/%s.chat' % (directory, id)):
-                #try:
-                chat = self.get_chat(id)
-                chat.write(directory)
-                count += 1
-                #except:
-                    #print 'failed to get chat id: %s - %s' % (id, sys.exc_info()[0])
-        print 'finished saving %d chat logs' % count
+        total = 0
+        print "Checking for existing logs..."
+        for chat_id in self.chat_ids:
+            if not os.path.exists('%s/%s.chat' % (directory, chat_id)):
+                total += 1
+
+        for chat_id in self.chat_ids:
+            if not os.path.exists('%s/%s.chat' % (directory, chat_id)):
+                try:
+                    chat = self.get_chat(chat_id)
+                    chat.write(directory)
+                    count += 1
+                except:
+                    print 'Failed to get chat id: %s - %s' % (chat_id, sys.exc_info()[0])
+            sys.stdout.write("Saving chat %d/%d...\r" % (count, total))
+            sys.stdout.flush()
+        print 'Finished saving %d chat logs...' % count
 
 
 class ChatLog(object):
