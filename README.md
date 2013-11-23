@@ -8,11 +8,19 @@ This is a work in progress. I'm interested in taking a look at how IMs affect my
 Archiving your chats
 ====================
 
-```python
-import chats
-logger = chats.GChatLog(user='username', passwd='1234')
-logger.import_chats('/path/to/archive/dir') # this will save all of the chats on the server into individual files in that directory
-```
+Import chat logs using the import_gchats script.
+
+    usage: ./import_gchats [-h] USERNAME [GCHAT\_LOG\_DIR]
+     
+    Download gchat logs from specified account.
+     
+    positional arguments:
+      USERNAME       Google chat ID of user to fetch the logs of. Typically gmail
+                     email address.
+      GCHAT\_LOG\_DIR  Directory to save chat logs into. Default: "gchat_logs"
+     
+    optional arguments:
+      -h, --help     show this help message and exit
 
 Gmail configuration
 ===================

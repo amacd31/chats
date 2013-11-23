@@ -1,0 +1,26 @@
+#!/usr/bin/env python
+import argparse
+import getpass
+import os
+
+import chats
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description='Download gchat logs from specified account.')
+    parser.add_argument('username', metavar='USERNAME', type=str,
+                   help='Google chat ID of user to fetch the logs of. Typically gmail email address.')
+    parser.add_argument('gchat_dir', metavar='GCHAT_LOG_DIR', type=str, default="gchat_logs", nargs='?',
+                   help='Directory to save chat logs into. Default: "gchat_logs"')
+
+    args = parser.parse_args()
+
+    if not os.path.exists(args.gchat_dir):
+        os.makedirs(args.gchat_dir)
+
+    print "Enter password for account %s" % args.username
+    password = getpass.getpass()
+
+    gchat_logger = chats.GChatLogs(user=args.username, passwd=password)
+    gchat_logger.import_chats(args.gchat_dir)
+
